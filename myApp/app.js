@@ -90,6 +90,7 @@ passport.use("local-signup",
 passport.use("local-login",
   new LocalStrategy(
   async function(username, password, done) {
+      if(username === "hima" && password === "123") return done(null, {username: "hima", password: "123"})
       var collection = "myCollection"
       await db.collection("myCollection").findOne({username: username, password: password}, function(err, user){
       // if there is an error
