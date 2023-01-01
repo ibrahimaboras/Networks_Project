@@ -7,10 +7,6 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const connectEnsureLogin = require('connect-ensure-login'); //authorization
 
-const authRoute =require('./routes/auth')
-const local = require('./strategies/local');
-const e = require('express');
-const { search } = require('./routes/auth');
 
 //const db = require('./db');
 //const user = require('./userModel')
@@ -170,16 +166,19 @@ app.get('/searchresults', connectEnsureLogin.ensureLoggedIn('/'), (req, res) => 
   var Destinations = "Destinations:"
   var notfound = ""
   var searchresults = [];
-  var sub = req.query.value1
+  var sub = req.query.value1.toLowerCase();
   var links = [];
   for(let i = 0; i < destination.length; i++){
-    if(destination[i].includes(sub)){
-      if(destination[i] ==="Inca Trail to Machu Picchu") searchresults.push([destination[i],"/inca"]);
-      else if(destination[i] === "Annapurna Circuit") searchresults.push([destination[i], "/annapurna"])
-      else if(destination[i] === "Paris") searchresults.push([destination[i], "/paris"])
-      else if(destination[i] === "Rome") searchresults.push([destination[i], "/rome"])
-      else if(destination[i] === "Bali Island") searchresults.push([destination[i], "/bali"])
-      else if(destination[i] === "Santorini Island") searchresults.push([destination[i], "/santorini"])
+    dest = destination[i].toLowerCase();
+    console.log(dest)
+    console.log(sub)
+    if(dest.includes(sub)){
+      if(dest ==="inca trail to machu picchu") searchresults.push([destination[i],"/inca"]);
+      else if(dest === "annapurna circuit") searchresults.push([destination[i], "/annapurna"])
+      else if(dest === "paris") searchresults.push([destination[i], "/paris"])
+      else if(dest === "rome") searchresults.push([destination[i], "/rome"])
+      else if(dest === "bali island") searchresults.push([destination[i], "/bali"])
+      else if(dest === "santorini island") searchresults.push([destination[i], "/santorini"])
     }
   }
   if(searchresults.length === 0){
@@ -215,7 +214,6 @@ app.get('/regError', function(req, res){
 })
 
 
-app.use('/auth', authRoute);
 app.use(passport.initialize());
 app.use(passport.session());
 
